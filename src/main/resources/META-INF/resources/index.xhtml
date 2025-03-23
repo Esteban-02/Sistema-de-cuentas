@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<h:html xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <title>Manejo de Cuentas</title>
+        <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/primeflex.css"/>
+        <link rel="stylesheet" href="https://unpkg.com/primeflex@latest/themes/primeone-dark.css"/>
+    </h:head>
+    <h:body>
+        <div class="card">
+            <div class="flex justify-content-center
+flex-wrap card-container yellow-container">
+                <h3>Sistema de Cuentas Bancarias 1</h3>
+            </div>
+            <div class="card">
+                <p:dataTable value="#{indexControlador.cuentas}" var="cuentas">
+                </p:dataTable>
+            </div>
+        </div>
+    </h:body>
+</h:html>

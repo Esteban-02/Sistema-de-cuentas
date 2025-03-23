@@ -10,12 +10,35 @@
     </h:head>
     <h:body>
         <div class="card">
-            <div class="flex justify-content-center
-flex-wrap card-container yellow-container">
-                <h3>Sistema de Cuentas Bancarias 1</h3>
-            </div>
+
             <div class="card">
                 <p:dataTable value="#{indexControlador.cuentas}" var="cuentas">
+                    <f:facet name="header">
+                        <div class="flex justify-content-center flex-wrap
+                        card-container yellow-container">
+                            <div class="flex align-items-center justify-content-center
+                                        w-20rem h-4rem bg-yellow-500 font-bold
+                                        text-gray-900 border-around m-2">
+                                <h3>Sistema de Cuentas Bancarias</h3>
+                            </div>
+                        </div>
+                    </f:facet>
+
+                    <p:column headerText="Id">
+                        <h:outputText value="#{cuentas.idCuenta}"/>
+                    </p:column>
+                    <p:column headerText="Nombre">
+                        <h:outputText value="#{cuentas.nombre}"/>
+                    </p:column>
+                    <p:column headerText="Tipo de cuenta">
+                        <h:outputText value="#{cuentas.tipoCuenta}"/>
+                    </p:column>
+                    <p:column headerText="Saldo">
+                        <h:outputText value="#{cuentas.saldo}">
+                            <f:convertNumber type="currency" currencySymbol="$"/>
+                        </h:outputText>
+
+                    </p:column>
                 </p:dataTable>
             </div>
         </div>

@@ -3,8 +3,11 @@ package gm.cuentas.controlador;
 import gm.cuentas.model.Cuenta;
 import gm.cuentas.servicio.CuentaServicio;
 import jakarta.annotation.PostConstruct;
+import jakarta.faces.application.FacesMessage;
+import jakarta.faces.context.FacesContext;
 import jakarta.faces.view.ViewScoped;
 import lombok.Data;
+import org.primefaces.PrimeFaces;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +39,24 @@ public class IndexControlador {
 
     public void agregarCuenta(){
         this.cuentaSeleccionada = new Cuenta();
+    }
 
+    public void guardarCuenta(){
+        logger.info("Cuenta a guardar: " + this.cuentaSeleccionada);
+        if (this.cuentaSeleccionada.getIdCuenta()==null){
+            this.cuentaServicio.guardarCuenta(this.cuentaSeleccionada);
+            this.cuentas.add(this.cuentaSeleccionada);
+            FacesContext.getCurrentInstance().addMessage(null,
+                    new FacesMessage("Cuenta agregada"));
+        }else{ //modificar una cuenta
+            this.cuentaServicio.guardarCuenta(this.cuentaSeleccionada);
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage("Cuenta actualizada"));
+
+        }
+        //Ocultamos la ventana
+        PrimeFaces.current().executeScript("PF('ventanaModalCuenta').hide()");
+        //Actualizar la tabla
+        PrimeFaces.current().ajax().update("forma-cuentas:mensajes",
+                "forma-cuentas:cuentas-tabla");
     }
 }

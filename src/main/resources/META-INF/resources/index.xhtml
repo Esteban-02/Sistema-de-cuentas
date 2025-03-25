@@ -14,6 +14,7 @@
                 <p:growl id="mensajes" showDetail="true"/>
 
                 <div class="card">
+<!--                    Menu con los items de inicio y de crear cuenta-->
                     <p:menubar>
                         <p:menuitem value="Inicio" icon="pi pi-fw pi-user"
                                     update=":forma-cuentas:cuentas-tabla"
@@ -24,7 +25,7 @@
                                     oncomplete="PF('ventanaModalCuenta').show()"/>
                     </p:menubar>
                 </div>
-
+<!--            Controla desde el titulo con la cabecera de la tabla-->
                 <div class="card">
                     <p:dataTable value="#{indexControlador.cuentas}" var="cuenta"
                     id="cuentas-tabla" widgetVar="cuentasTabla">
@@ -39,7 +40,7 @@
                                 </div>
                             </div>
                         </f:facet>
-
+<!--                 Crea las columnas de la tabla e itera desde cada valor en la base de datos para mostrar en las columnas-->
                         <p:column headerText="Id">
                             <h:outputText value="#{cuenta.idCuenta}"/>
                         </p:column>
@@ -51,17 +52,31 @@
                         <p:column headerText="Tipo de cuenta">
                             <h:outputText value="#{cuenta.tipoCuenta}"/>
                         </p:column>
-
+<!--                    Se configura la salida del saldo con la moneda que se le quiere asignar-->
                         <p:column headerText="Saldo">
                             <h:outputText value="#{cuenta.saldo}">
                                 <f:convertNumber type="currency" currencySymbol="$"/>
                             </h:outputText>
                         </p:column>
 
+                        <p:column>
+                            <p:commandButton value="Editar" icon="pi pi-pencil"
+                                             update=":forma-modal:cuenta-ventana"
+                                             oncomplete="PF('ventanaModalCuenta').show()"
+                                             process="@this"
+                                             class="ui-button-primary"
+                                             style="margin-right: .5rem">
+                                <f:setPropertyActionListener
+                                        target="#{indexControlador.cuentaSeleccionada}"
+                                        value="#{cuenta}"/>
+                                <p:resetInput target=":forma-modal:cuenta-ventana"/>
+                            </p:commandButton>
+                        </p:column>
+
                     </p:dataTable>
                 </div>
             </h:form>
-
+<!--            Ventana para agregar una nueva cuenta -->
             <h:form id="forma-modal">
                 <p:dialog header="Detalles Cuenta" showEffect="fade"
                           modal="true" widgetVar="ventanaModalCuenta"
@@ -77,6 +92,7 @@
                             <p:outputLabel for="tipoCuenta">Tipo Cuenta</p:outputLabel>
                             <p:selectOneMenu id="tipoCuenta"
                                              value="#{indexControlador.cuentaSeleccionada.tipoCuenta}">
+<!--                          se cargan los items como opciones desplegables para el tipo de cuenta-->
                                 <f:selectItem itemLabel="Selecciona" itemValue=""/>
                                 <f:selectItem itemLabel="Ahorro" itemValue="Ahorro"/>
                                 <f:selectItem itemLabel="Credito" itemValue="Credito"/>
@@ -89,6 +105,15 @@
                                            value="#{indexControlador.cuentaSeleccionada.saldo}"/>
                         </div>
                     </p:outputPanel>
+
+                    <f:facet name="footer">
+                        <p:commandButton value="Guardar" icon="pi pi-check"
+                                         process="cuenta-ventana @this"
+                                         actionListener="#{indexControlador.guardarCuenta}"/>
+                        <p:commandButton value="Cancelar" icon="pi pi-times"
+                                         onclick="PF('ventanaModalCuenta').hide()"
+                                         class="ui-button-secondary" type="button"/>
+                    </f:facet>
                 </p:dialog>
             </h:form>
         </div>
